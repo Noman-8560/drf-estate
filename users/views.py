@@ -1,10 +1,12 @@
 from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
-from .models import User
+from .serializers import UserSerializer, PropertiesSerializer
+from .models import User, Properties
 import jwt
 import datetime
+
 
 # Create your views here.
 class RegisterView(APIView):
@@ -71,3 +73,45 @@ class LogoutView(APIView):
             'message': 'success'
         }
         return response
+
+
+class PropertiesListAV(APIView):
+
+    def get(self, request):
+        Propertie = Properties.objects.all()
+        serializer = PropertiesSerializer(Propertie, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = PropertiesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
+class PropertiesDetailAV(APIView):
+
+    def get(self, request, pk):
+        try:
+            Propertie = Properties.objects.get(pk=pk)
+        except Properties.DoesNotExist:
+            return Response({'error': 'Movie not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PropertiesSerializer(Propertie)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        Propertie = Properties.objects.get(pk=pk)
+        serializer = PropertiesSerializer(Propertie, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        Propertie = Properties.objects.get(pk=pk)
+        Propertie.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
