@@ -1,14 +1,33 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from .models import User, Properties
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'phone_number', 'email', 'password']
+        fields = ['id', 'username', 'phone_number', 'email', 'password', 'password2']
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'password2': {'write_only': True},
         }
+
+    def validate_password(self, value):
+        data = self.get_initial()
+        password = data.get('password2')
+        password2 = value
+        if password != password2:
+            raise ValidationError('Passwords must match')
+        return value
+
+    def validate_password2(self, value):
+        data = self.get_initial()
+        password = data.get('password')
+        password2 = value
+        if password != password2:
+            raise ValidationError('Passwords must match')
+        return value
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
