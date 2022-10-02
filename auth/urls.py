@@ -10,5 +10,6 @@ route = routers.DefaultRouter()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('users.urls'))
+    path('api/', include('users.urls')),
+    path('api/stripe/', include('users.urls'))
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
