@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -108,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -132,5 +134,14 @@ MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'users.User'
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLIC_KEY = "pk_test_51Lo2gQDi64lensrvuWy2E9bmxX0HqA6HfkBgqYjiX57LqyUCuieQcfPapMRyF4od7yZ4i8Wh1xbzVd86dOyfjizR00YNBanLDe"
+STRIPE_SECRET_KEY = "sk_test_51Lo2gQDi64lensrvRakP4HGb7ypNv601zE8CGNbAs4EoikLwrZFLPpn30VS7bWxqPGW3IZz6NEnHesULfByNBBbr002RjwgmLd"
+
+# STRIPE_SECRET_WEBHOOK="whsec_mwXBR7ZwLZe5XTFPlDekNrQeFaqrXkNj"
+CORS_ALLOWED_ORIGINS=[
+    'http://localhost:3000'
+]
+SITE_URL = 'http://localhost:3000/'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBacke"
